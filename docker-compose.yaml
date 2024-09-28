@@ -1,0 +1,43 @@
+services:
+
+  frontend:
+    container_name: frontend
+    build: ./client/.
+    ports:
+      - "9999:9999"
+    volumes:
+      - ./client/src:/app/src:ro
+      - ./client/index.html:/app/index.html:ro
+    depends_on:
+      - backend
+    env_file:
+      - .env
+
+  backend:
+    container_name: api
+    build: ./api
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api/src:/app/src:ro
+      - ./api/uploads:/app/uploads
+    depends_on:
+      - db
+    env_file:
+      - .env
+    
+  
+  db:
+    container_name: database
+    image: postgres
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    ports:
+      - 8080:8080

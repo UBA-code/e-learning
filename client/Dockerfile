@@ -1,11 +1,11 @@
-FROM node:alpine3.19
+FROM node:18
 
 WORKDIR /app
 
-COPY package.json .
+# COPY package*.json .
 
-RUN npm install
+# RUN npm install
 
-COPY . .
+# COPY . .
 
-CMD [ "npm", "run", "dev", "--", "--host" ]
+CMD npm i && npm run dev -- --host

@@ -16,5 +16,6 @@ export default function useFetch<T>(
         console.log(err);
       }
     },
+    refetchOnWindowFocus: false,
   });
 }

@@ -6,12 +6,12 @@ services:
     ports:
       - "9999:9999"
     volumes:
-      - ./client/src:/app/src:ro
-      - ./client/index.html:/app/index.html:ro
+      - ./client:/app
     depends_on:
       - backend
     env_file:
       - .env
+    restart: always
 
   backend:
     container_name: api
@@ -25,6 +25,8 @@ services:
       - db
     env_file:
       - .env
+    restart: always
+    
     
   
   db:
@@ -34,10 +36,16 @@ services:
       - 5432:5432
     env_file:
       - .env
-    
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: always
 
   adminer:
     image: adminer:latest
     restart: always
     ports:
       - 8080:8080
+
+
+volumes:
+  db-data:

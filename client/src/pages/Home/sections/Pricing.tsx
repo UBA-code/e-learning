@@ -117,14 +117,17 @@ function Plans({ selectedTab }: { selectedTab: string }) {
   );
 }
 
-export default function Pricing() {
+export default function Pricing({ description }: { description?: string }) {
   const [activeTab, setActiveTab] = useState("monthly");
 
   return (
     <div className="pricing-box overflow-hidden">
       <SectionHeader
         title="Our Pricing"
-        description="Lorem ipsum dolor sit amet consectetur. Tempus tincidunt etiam eget elit id imperdiet et. Cras eu sit dignissim lorem nibh et. Ac cum eget habitasse in velit fringilla feugiat senectus in."
+        description={
+          description ||
+          "Lorem ipsum dolor sit amet consectetur. Tempus tincidunt etiam eget elit id imperdiet et. Cras eu sit dignissim lorem nibh et. Ac cum eget habitasse in velit fringilla feugiat senectus in."
+        }
       />
       <Tabs
         className="my-10 flex justify-center"

@@ -1,4 +1,5 @@
 import Author from 'src/author/enteties/author.enteties';
+import { CurriculmEntity } from 'src/curriculm/entities/curriculm.enteties';
 import { Tags } from 'src/tags/tags.enteties';
 import {
   Column,
@@ -6,6 +7,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -23,8 +25,10 @@ export class Courses {
   @Column({ type: 'integer' })
   price: number;
 
-  @Column({ type: 'text', array: true })
-  curriculm: string[];
+  @OneToMany(() => CurriculmEntity, (course) => course.course, {
+    onDelete: 'CASCADE',
+  })
+  curriculm: CurriculmEntity[];
 
   @Column({ type: 'text', array: true })
   images: string[];

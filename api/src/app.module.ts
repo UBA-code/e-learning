@@ -9,6 +9,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthorModule } from './author/Author.module';
 import { TagsModule } from './tags/Tags.module';
+import { VideoModule } from './videos/video.module';
+import { CurriculmModule } from './curriculm/Curriculm.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { TagsModule } from './tags/Tags.module';
     CoursesModule,
     TagsModule,
     AuthorModule,
+    VideoModule,
+    CurriculmModule,
   ],
 
   controllers: [AppController],

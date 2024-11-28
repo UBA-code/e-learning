@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -11,7 +12,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { CoursesService } from './Courses.service';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import {
+  FileFieldsInterceptor,
+  FilesInterceptor,
+} from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v4 as uuid4 } from 'uuid';
@@ -23,38 +27,52 @@ export class CoursesController {
   constructor(private coursesService: CoursesService) {}
 
   @Get('')
-  getCourses() {
-    return this.coursesService.getCourses();
+  async getCourses() {
+    return await this.coursesService.getCourses();
   }
 
   @Get('selected')
-  getSelectedCourses() {
-    return this.coursesService.getSelectedCourses();
+  async getSelectedCourses() {
+    return await this.coursesService.getSelectedCourses();
   }
 
   @Get(':id')
-  getCourse(@Param('id', ParseIntPipe) id: number) {
-    return this.coursesService.getCourseById(id);
+  async getCourse(@Param('id', ParseIntPipe) id: number) {
+    return await this.coursesService.getCourseById(id);
   }
 
   @Post()
   @UseInterceptors(
-    FilesInterceptor('courseImg', 3, {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, callback) => {
-          const uniqueSuffix = uuid4();
-          const ext = extname(file.originalname);
-          callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
-        },
-      }),
-    }),
+    FileFieldsInterceptor(
+      [{ name: 'courseImg', maxCount: 3 }, { name: 'videos' }],
+      {
+        storage: diskStorage({
+          destination: './uploads',
+          filename: (req, file, callback) => {
+            const uniqueSuffix = uuid4();
+            const ext = extname(file.originalname);
+            callback(null, `${file.fieldname}-${uniqueSuffix}${ext}`);
+          },
+        }),
+      },
+    ),
   )
-  newPost(
+  newCourse(
     @Body() course: CourseDto,
-    @UploadedFiles() files: Array<Express.Multer.File>,
+    @UploadedFiles()
+    files: {
+      courseImg?: Express.Multer.File[];
+      videos?: Express.Multer.File[];
+    },
   ) {
-    return this.coursesService.createCourse(course, files);
+    if (!files.courseImg || !files.videos) {
+      throw new BadRequestException('No files provided');
+    }
+    return this.coursesService.createCourse(
+      course,
+      files.courseImg,
+      files.videos,
+    );
   }
 
   @Patch(':id')
@@ -81,5 +99,23 @@ export class CoursesController {
   @Delete(':id')
   deleteCourse(@Param('id', ParseIntPipe) id: number) {
     return this.coursesService.deleteCourseById(id);
+  }
+
+  private validateImages(images: Express.Multer.File[]) {
+    const maxSize = 10 * 1024 * 1024; // 10 MB
+    const allowedMimeTypes = /^image\/.+$/;
+
+    for (const image of images) {
+      if (image.size > maxSize) {
+        throw new BadRequestException(
+          `Image ${image.originalname} exceeds the size limit of 10MB.`,
+        );
+      }
+      if (!allowedMimeTypes.test(image.mimetype)) {
+        throw new BadRequestException(
+          `File ${image.originalname} is not a valid image type.`,
+        );
+      }
+    }
   }
 }

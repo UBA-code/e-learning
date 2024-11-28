@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { CgClose } from "react-icons/cg";
 import { Button } from "../ui/button";
 import { LuMoveRight } from "react-icons/lu";
+import { NavLink } from "react-router-dom";
 
 interface MobileNavBarProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen: boolean;
@@ -66,10 +67,18 @@ export default function MobileNavBar({
               </Button>
             </CardHeader>
             <CardBody className="text-2xl text-[#333] font-semibold space-y-[6vh] mt-10">
-              <MenuElement content={"Home"} delay={0} />
-              <MenuElement content={"Courses"} delay={0.1} />
-              <MenuElement content={"About Us"} delay={0.2} />
-              <MenuElement content={"Pricing"} delay={0.3} />
+              <NavLink to={"/"} onClick={() => setIsOpen(false)}>
+                <MenuElement content={"Home"} delay={0} />
+              </NavLink>
+              <NavLink to={"/courses"} onClick={() => setIsOpen(false)}>
+                <MenuElement content={"Courses"} delay={0.1} />
+              </NavLink>
+              <NavLink to={"/about-us"} onClick={() => setIsOpen(false)}>
+                <MenuElement content={"About Us"} delay={0.2} />
+              </NavLink>
+              <NavLink to={"/pricing"} onClick={() => setIsOpen(false)}>
+                <MenuElement content={"Pricing"} delay={0.3} />
+              </NavLink>
               <MenuElement content={"Contact Us"} delay={0.4} />
             </CardBody>
           </Card>

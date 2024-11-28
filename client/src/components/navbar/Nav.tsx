@@ -7,11 +7,13 @@ import logo from "@/assets/nav/logo.svg";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import MobileNavBar from "./MobileNavBar";
 import { useEffect, useRef, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export default function Nav() {
   const [isOpen, setIsOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const lastSavedScroll = useRef(window.scrollY);
+  const navigate = useNavigate();
 
   // Function to toggle navbar visibility on scroll
   const handleScroll = () => {
@@ -43,15 +45,23 @@ export default function Nav() {
           <div className="logo mr-auto flex items-center space-x-10">
             <img src={logo} alt="" />
             <div className="big-screens-links hidden md:block">
-              <NextuiButton variant={"light"}>Home</NextuiButton>
-              <NextuiButton variant={"light"}>Courses</NextuiButton>
-              <NextuiButton variant={"light"}>About Us</NextuiButton>
-              <NextuiButton variant={"light"}>Pricing</NextuiButton>
+              <NavLink to={"/"}>
+                <NextuiButton variant={"light"}>Home</NextuiButton>
+              </NavLink>
+              <NavLink to={"/courses"}>
+                <NextuiButton variant={"light"}>Courses</NextuiButton>
+              </NavLink>
+              <NavLink to={"/about-us"}>
+                <NextuiButton variant={"light"}>About Us</NextuiButton>
+              </NavLink>
+              <NavLink to={"/pricing"}>
+                <NextuiButton variant={"light"}>Pricing</NextuiButton>
+              </NavLink>
               <NextuiButton variant={"light"}>Contact</NextuiButton>
             </div>
           </div>
           <Button variant={"ghost"}>Sign Up</Button>
-          <Button>Login</Button>
+          <Button onClick={() => navigate('/login')}>Login</Button>
           <Button
             variant={"ghost"}
             className="menu-toggle rounded-full size-12 md:hidden flex justify-end"

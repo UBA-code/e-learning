@@ -63,7 +63,7 @@
 }
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border text-primary-text;
   }
   body {
     @apply bg-background text-foreground;
@@ -72,4 +72,15 @@
 
 html {
   font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.video-box * {
+  color: var(--primaryasd);
+}
+
+.video-react-big-play-button {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
 }

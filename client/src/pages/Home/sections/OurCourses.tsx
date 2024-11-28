@@ -4,7 +4,7 @@ import {
   CardBody,
   CardFooter,
   CardHeader,
-  CircularProgress,
+  Spinner,
 } from "@nextui-org/react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -23,7 +23,7 @@ export function OurCoursesCard({ data }: OurCoursesCardProps) {
       whileInView={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, bounce: 0, delay: 0.3 }}
     >
-      <Card className="p-4 sm:p-8">
+      <Card className="p-4 sm:p-8 h-full">
         <CardHeader className="flex-col space-y-6">
           <div
             className={`img bg-cover bg-center w-full h-[200px] sm:h-[300px] rounded-lg`}
@@ -84,11 +84,7 @@ export default function OurCourses() {
       {isLoading ? (
         <div className="mx-auto my-20 text-center space-y-4">
           <h1>Loading courses</h1>
-          <CircularProgress
-            size="lg"
-            className="mx-auto"
-            aria-label="loading"
-          />
+          <Spinner size="lg" className="mx-auto" aria-label="loading" />
         </div>
       ) : (
         <motion.div

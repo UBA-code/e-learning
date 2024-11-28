@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { videoInfoDto } from 'src/videos/videoInfo.dto';
 
 export default class CourseDto {
   @IsNotEmpty()
@@ -27,4 +28,8 @@ export default class CourseDto {
   @IsArray()
   @Type(() => Array)
   tags: string[];
+
+  @IsArray()
+  @Type(() => Array<videoInfoDto>)
+  videoInfo: videoInfoDto[];
 }
